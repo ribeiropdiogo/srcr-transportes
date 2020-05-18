@@ -16,6 +16,7 @@
 :- set_prolog_flag( discontiguous_warnings,off ).
 :- set_prolog_flag( single_var_warnings,off ).
 :- set_prolog_flag( unknown,fail ).
+:- use_module(library(lists)).
 
 :- op(900,xfy,'::').
 

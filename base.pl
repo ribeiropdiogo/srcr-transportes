@@ -92,8 +92,18 @@ membros([X|Xs],Members) :- membro(X,Members), membros(Xs,Members).
 teste([]).
 teste([H|T]) :- H, teste(T).
 
-escrever([]).
-escrever([X|L]) :- write(X), nl, escrever(L).
+escreve_resultado([],D) :- write('Duracao estimada: '), 
+        write(D), write(' min'), nl.
+escreve_resultado([X|L],D) :- write('Carreira: '),
+        write(X), nl, escreve_resultado(L,D).
 
 seleciona(E, [E|Xs], Xs).
 seleciona(E, [X|Xs], [X|Ys]) :- seleciona(E, Xs, Ys).
+
+inverso(Xs, Ys) :- inverso(Xs,[],Ys).
+inverso([],Xs,Xs).
+inverso([X|Xs],Ys,Zs) :- inverso(Xs, [X|Ys], Zs).
+
+
+duracao([],0).
+duracao([_|Xs],L) :- duracao(Xs,N) , L is N+5 .
