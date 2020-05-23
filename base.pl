@@ -15,8 +15,8 @@
 % Predicado RUA possui os campos: CÓDIGO, NOME e FREGUESIA
 :- dynamic(rua/3).
 
-% Predicado PARAGEM possui os campos: ID, LATITUDE, LONGITUDE, ESTADO CONSERVAÇÃO, TIPO ABRIGO, PUBLICIDADE, OPERADORA, CARREIRA E CÓDIGO RUA
-:- dynamic(paragem/9).
+% Predicado PARAGEM possui os campos: ID, LATITUDE, LONGITUDE, ESTADO CONSERVAÇÃO, TIPO ABRIGO, PUBLICIDADE, OPERADORA, E CÓDIGO RUA
+:- dynamic(paragem/8).
 
 
 % ------- Pressuposto do Mundo Fechado --------
@@ -27,9 +27,9 @@
     nao(excecao(rua(Codigo,Nome,Freguesia))).
 
 % Extensão do predicado PARAGEM
--paragem(ID,LAT,LON,ESTADO,TIPO,PUB,OP,CARR,RUA) :-
-    nao(paragem(ID,LAT,LON,ESTADO,TIPO,PUB,OP,CARR,RUA)),
-    nao(excecao(paragem(ID,LAT,LON,ESTADO,TIPO,PUB,OP,CARR,RUA))).
+-paragem(ID,LAT,LON,ESTADO,TIPO,PUB,OP,RUA) :-
+    nao(paragem(ID,LAT,LON,ESTADO,TIPO,PUB,OP,RUA)),
+    nao(excecao(paragem(ID,LAT,LON,ESTADO,TIPO,PUB,OP,RUA))).
 
 % --------------- Invariantes -----------------
 % Invariantes que garantem a consistência da informação
@@ -40,7 +40,7 @@
                 R==1).
 
 % Invariante Estrutural: não permite a inserção de conhecimento repetido
-+paragem(ID,LA,LO,ES,TI,PU,OP,CA,RU) :: (findall((ID,LA,LO,ES,TI,PU,OP,CA,RU),(paragem(ID,LA,LO,ES,TI,PU,OP,CA,RU)),S),
++paragem(ID,LA,LO,ES,TI,PU,OP,RU) :: (findall((ID,LA,LO,ES,TI,PU,OP,RU),(paragem(ID,LA,LO,ES,TI,PU,OP,RU)),S),
                                         length(S,N),
                                         N==1).
 
@@ -70,6 +70,8 @@ remove(Termo) :- assert(Termo),!,fail.
 
 % Predicado RUA
 insereRua(C,N,F) :- evolucao(rua(C,N,F)).
+% Predicado PARAGEM
+insereParagem(ID,LA,LO,ES,TI,PU,OP,RU) :- evolucao(paragem(ID,LA,LO,ES,TI,PU,OP,RU)).
 
 
 % -------- Predicados Extensão Lógica ---------
@@ -92,10 +94,14 @@ membros([X|Xs],Members) :- membro(X,Members), membros(Xs,Members).
 teste([]).
 teste([H|T]) :- H, teste(T).
 
-escreve_resultado([],D) :- write('Duracao estimada: '), 
+escreve_resultado([],D) :- write('Duracao estimada: '),
         write(D), write(' min'), nl.
 escreve_resultado([X|L],D) :- write('Carreira: '),
         write(X), nl, escreve_resultado(L,D).
+
+escreve_resultado_l([],D) :- escreve_resultado([],D).
+escreve_resultado_l([H|T],D) :- escreve_resultado(H,D),
+        escreve_resultado_l(T,D).
 
 seleciona(E, [E|Xs], Xs).
 seleciona(E, [X|Xs], [X|Ys]) :- seleciona(E, Xs, Ys).
@@ -104,6 +110,11 @@ inverso(Xs, Ys) :- inverso(Xs,[],Ys).
 inverso([],Xs,Xs).
 inverso([X|Xs],Ys,Zs) :- inverso(Xs, [X|Ys], Zs).
 
-
 duracao([],0).
 duracao([_|Xs],L) :- duracao(Xs,N) , L is N+5 .
+
+operadoras(ID,L) :- paragem(ID,_,_,_,_,_,OP,_), membro(OP,L).
+
+publicidade(ID) :- paragem(ID,_,_,_,_,'Yes',_,_).
+
+abrigado(ID) :- paragem(ID,_,_,_,ABR,_,_,_), membro(ABR,['Fechado dos Lados','Aberto dos Lados']).

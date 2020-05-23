@@ -23,8 +23,25 @@ filename = '../paragens.xlsx'
 fparagens = pd.ExcelFile(filename)
 paragens = pd.read_excel(filename, sheet_name='Sheet 1')
 
-f.write("% ----------- Estruturas de Dados ------------ \n")
+f.write("% ----------- Estruturas de Dados ------------ \n\n")
 
+f.write("% ---------------- Paragens ------------------ \n")
+ruas = []
+
+for i in paragens.index:
+    gid = str(paragens['gid'][i])
+    lat = str(paragens['latitude'][i])
+    lon = str(paragens['longitude'][i])
+    estado = str(paragens['Estado de Conservacao'][i])
+    tipo = str(paragens['Tipo de Abrigo'][i])
+    pub = str(paragens['Abrigo com Publicidade?'][i])
+    operadora = str(paragens['Operadora'][i])
+    codrua = str(paragens['Codigo de Rua'][i])
+    f.write("?- insereParagem("+gid+","+lat+","+lon+",'"+estado+"'"+",'"+tipo+"','"+pub+"','"+operadora+"',"+codrua+").\n")
+
+f.write("\n\n");
+
+f.write("% ------------------ Ruas -------------------- \n")
 ruas = []
 
 for i in paragens.index:
@@ -37,12 +54,12 @@ for i in paragens.index:
 
 f.write("\n\n");
 
-f.write("% -------------- Tempo Parado  --------------- \n")
-for i in paragens.index:
-    paragem = paragens['gid'][i]
-    f.write("?- evolucao(tempo("+str(paragem)+",1)).\n")
+# f.write("% -------------- Tempo Parado  --------------- \n")
+# for i in paragens.index:
+#     paragem = paragens['gid'][i]
+#     f.write("?- evolucao(tempo("+str(paragem)+",1)).\n")
 
-f.write("\n\n");
+# f.write("\n\n");
 
 # Parsing das Adjacências
 filename = '../adjacencias.xlsx'
