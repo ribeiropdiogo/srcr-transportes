@@ -83,6 +83,67 @@ demo(P,verdadeiro) :- P.
 demo(P,falso) :- -P.
 demo(P,desconhecido) :- nao(P), nao(-P).
 
+% ----------- Predicados de Escrita -----------
+
+escreve_carreiras([]).
+escreve_carreiras([[A,B]|T]) :- write('Paragem: '),write(A),
+        write(' tem '), write(B),write(' carreiras'),nl,
+        escreve_carreiras(T).
+
+escreve_paragem(P) :- paragem(P,LA,LO,ES,TI,PU,OP,RU),
+        write('Paragem: '),write(P), nl,
+        write('Estado: '),write(ES), nl,
+        write('Tipo: '),write(TI), nl,
+        write('Publicidade: '),write(PU), nl,
+        write('Operadora: '),write(OP), nl.
+
+escreve_resultado([],D) :- write('Duracao estimada: '),
+        write(D), write(' min'), nl.
+escreve_resultado([[P1,P2,C]|L],D) :- write('Paragem '),
+        write(P1), write(' -> Paragem '), write(P2),
+        write(' | Carreira: '), write(C),nl, 
+        escreve_resultado(L,D).
+escreve_resultado([]).       
+escreve_resultado([[P1,P2,C]|L]) :- write('Paragem '),
+        write(P1), write(' -> Paragem '), write(P2),
+        write(' | Carreira: '), write(C),nl, 
+        escreve_resultado(L).
+
+escreve_resultado_l([],D) :- write('Duracao estimada: '),
+        write(D), write(' min'), nl.
+escreve_resultado_l([H|T],D) :- write('Percurso: '), nl, 
+                                escreve_resultado(H), 
+                                escreve_resultado_l(T,D).
+
+% ----------- Predicados Informação -----------
+
+carreiras(P,CS) :- findall(C,percurso(P,P1,C,T), L),
+        findall(C,percurso(P0,P,C,T), L),
+        sort(L,CS).
+
+maiscarreiras(S) :- collectparagens(S,Paragens), 
+                    sort(Paragens,SParagens),
+                    maiscarreirasaux(SParagens,ParCar),
+                    escreve_carreiras(ParCar).
+
+maiscarreirasaux([],[]).
+maiscarreirasaux([H|T],[[H,Len]|X]) :- carreiras(H,F), length(F,Len),maiscarreirasaux(T,X).
+
+collectparagens([],[]).
+collectparagens([[P1,P2,C]|L],[P1,P2|X]) :- collectparagens(L,X).
+
+duracao([],0).
+duracao([_|Xs],L) :- duracao(Xs,N) , L is N+5 .
+
+duracao_l([],0).
+duracao_l([H|T],L) :- duracao_l(T,R), duracao(H,A), L is R + A.
+
+operadoras(ID,L) :- paragem(ID,_,_,_,_,_,OP,_), membro(OP,L).
+
+publicidade(ID) :- paragem(ID,_,_,_,_,'Yes',_,_).
+
+abrigado(ID) :- paragem(ID,_,_,_,ABR,_,_,_), membro(ABR,['Fechado dos Lados','Aberto dos Lados']).
+
 % ------------- Predicados Extra --------------
 
 membro(H,[H|_]) :- !.
@@ -94,27 +155,11 @@ membros([X|Xs],Members) :- membro(X,Members), membros(Xs,Members).
 teste([]).
 teste([H|T]) :- H, teste(T).
 
-escreve_resultado([],D) :- write('Duracao estimada: '),
-        write(D), write(' min'), nl.
-escreve_resultado([X|L],D) :- write('Carreira: '),
-        write(X), nl, escreve_resultado(L,D).
-
-escreve_resultado_l([],D) :- escreve_resultado([],D).
-escreve_resultado_l([H|T],D) :- escreve_resultado(H,D),
-        escreve_resultado_l(T,D).
-
 seleciona(E, [E|Xs], Xs).
 seleciona(E, [X|Xs], [X|Ys]) :- seleciona(E, Xs, Ys).
 
 inverso(Xs, Ys) :- inverso(Xs,[],Ys).
 inverso([],Xs,Xs).
-inverso([X|Xs],Ys,Zs) :- inverso(Xs, [X|Ys], Zs).
+inverso([X|Xs],Ys,Zs) :- inverso(Xs, [X|Ys], Zs). 
 
-duracao([],0).
-duracao([_|Xs],L) :- duracao(Xs,N) , L is N+5 .
 
-operadoras(ID,L) :- paragem(ID,_,_,_,_,_,OP,_), membro(OP,L).
-
-publicidade(ID) :- paragem(ID,_,_,_,_,'Yes',_,_).
-
-abrigado(ID) :- paragem(ID,_,_,_,ABR,_,_,_), membro(ABR,['Fechado dos Lados','Aberto dos Lados']).
