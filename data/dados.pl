@@ -2610,3 +2610,8 @@
 ?- evolucao(percurso(895,897,776,5)).
 ?- evolucao(percurso(897,681,776,5)).
 ?- evolucao(percurso(681,459,776,5)).
+
+
+?- evolucao(distancia(183,791,7)).
+?- evolucao(distancia(791,595,10)).
+?- evolucao(distancia(595,182,7)).

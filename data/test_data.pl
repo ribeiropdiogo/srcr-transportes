@@ -31,5 +31,10 @@
 ?- evolucao(percurso(593,499,01,5)).
 ?- evolucao(percurso(499,494,01,5)).
 ?- evolucao(percurso(494,366,01,5)).
-?- evolucao(percurso(79,957,02,5)).
+%?- evolucao(percurso(79,957,02,5)).
 ?- evolucao(percurso(957,366,02,5)).
+
+
+?- evolucao(distancia(79,123,15)).
+?- evolucao(distancia(79,593,5)).
+?- evolucao(distancia(593,499,6)).
