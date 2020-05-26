@@ -71,6 +71,6 @@ expande_aestrela(Caminho, ExpCaminhos) :-
         findall(NovoCaminho, adjacente(Caminho,NovoCaminho), ExpCaminhos).
 
 adjacente([Nodo|Caminho]/Custo/_, [ProxNodo,Nodo|Caminho]/NovoCusto/Est) :-
-        percurso(Nodo, ProxNodo, Carreira, PassoCusto),\+ member(ProxNodo, Caminho),
+        percurso(Nodo, ProxNodo, Carreira, Tempo),\+ member(ProxNodo, Caminho),
         NovoCusto is Custo + PassoCusto,
         distancia(Nodo, ProxNodo, Est).
