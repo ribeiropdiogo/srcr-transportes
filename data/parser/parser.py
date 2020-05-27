@@ -1,3 +1,4 @@
+import math
 import pandas as pd
 from pandas import ExcelWriter
 from pandas import ExcelFile
@@ -66,16 +67,43 @@ filename = '../adjacencias.xlsx'
 fadjacencias = pd.ExcelFile(filename)
 
 f.write("% ----------- Lista de Adjacências ----------- \n")
-f.write("% paragem - paragem - carreira - duração\n")
+f.write("% paragem - paragem - carreira - distancia\n")
 for carreira in fadjacencias.sheet_names:
     paragens = pd.read_excel(filename, sheet_name=carreira)
     for i in paragens.index:
         if i != paragens.index[-1]:
-            f.write("?- evolucao(percurso("+str(paragens['gid'][i])+","+str(paragens['gid'][i+1])+","+carreira+",5)).\n")
+            dist = math.sqrt(((paragens['latitude'][i] - paragens['latitude'][i + 1]) ** 2) + ((paragens['longitude'][i] - paragens['longitude'][i + 1]) ** 2))
+            f.write("?- evolucao(percurso("+str(paragens['gid'][i])+","+str(paragens['gid'][i+1])+","+carreira+","+str(dist)+")).\n")
         if i == paragens.index[-1]:
-            f.write("?- evolucao(percurso("+str(paragens['gid'][i])+","+str(paragens['gid'][0])+","+carreira+",5)).\n")
+            dist = math.sqrt(((paragens['latitude'][i] - paragens['latitude'][0]) ** 2) + ((paragens['longitude'][i] - paragens['longitude'][0]) ** 2))
+            f.write("?- evolucao(percurso("+str(paragens['gid'][i])+","+str(paragens['gid'][0])+","+carreira+","+str(dist)+")).\n")
+
+# Parsing das Estimativas
+filename = '../paragens.xlsx'
+fparagens = pd.ExcelFile(filename)
+paragens = pd.read_excel(filename, sheet_name='Sheet 1')
+
+f.write("% --------------- Estimativas ---------------- \n")
+ruas = []
+destino = int(185)
 
 
+for i in paragens.index:
+    if paragens['gid'][i] == destino:
+        latd = paragens['latitude'][i]
+        lond = paragens['longitude'][i]
 
+f.write("% Destino => "+str(destino)+" \n")
+for i in paragens.index:
+    gid = str(paragens['gid'][i])
+    lat = str(paragens['latitude'][i])
+    lon = str(paragens['longitude'][i])
+    if paragens['gid'][i] == destino:
+        f.write("?- evolucao(estimativa(" + gid + ",0)).\n")
+    if paragens['gid'][i] != destino:
+        dist = math.sqrt(((paragens['latitude'][i] - latd) ** 2) + ((paragens['longitude'][i] - lond) ** 2))
+        f.write("?- evolucao(estimativa("+gid+","+str(dist)+")).\n")
+
+f.write("\n\n");
 
 f.close()

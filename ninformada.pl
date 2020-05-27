@@ -109,7 +109,7 @@ bfsr(Y,[n(S,P1)|Ns],C,'publicidade',P) :- findall(n(S1,[[S,S1,A]|P1]),
         (percurso(S,S1,A,T), publicidade(S),
         publicidade(S1),\+ member(n(S1,_),C)), Es),
         append(Ns,Es,O),
-		append(C,Es,C1),
+		    append(C,Es,C1),
         bfsr(Y,O,C1,'publicidade',P).
 
 bfsr(Y,[n(S,P1)|Ns],C,'abrigado',P) :- findall(n(S1,[[S,S1,A]|P1]),

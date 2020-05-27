@@ -3,7 +3,7 @@
 % consult('/Users/ribeiro/Google Drive/MIEI/3º ano/2º semestre/Sistemas de Representação de Conhecimento e Raciocínio/fichas práticas/ficha12.prolog.BB.pl').
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Programacao em logica 
+% Programacao em logica
 % Pesquisa Não Informada e Informada (Ficha 12)
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
@@ -15,6 +15,7 @@
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
+% consult('~/Projetos/srcr-transportes/inf.pl').
 move(s, a, 2).
 move(a, b, 2).
 move(b, c, 2).
@@ -37,7 +38,7 @@ estima(t, 0).
 
 goal(t).
 
-%---------------------------------pesquisa em profundidade primeiro 
+%---------------------------------pesquisa em profundidade primeiro
 
 
 resolve_pp(Nodo, [Nodo|Caminho]) :-
@@ -48,14 +49,14 @@ profundidadeprimeiro(Nodo, []) :-
 
 profundidadeprimeiro(Nodo, [ProxNodo|Caminho]) :-
 	adjacente(Nodo, ProxNodo),
-	profundidadeprimeiro(ProxNodo, Caminho).	
+	profundidadeprimeiro(ProxNodo, Caminho).
 
-adjacente(Nodo, ProxNodo) :- 
+adjacente(Nodo, ProxNodo) :-
 	move(Nodo, ProxNodo, _).
 
 
 
-%---------------------------------pesquisa a estrela 
+%---------------------------------pesquisa a estrela
 
 resolve_aestrela(Nodo, Caminho/Custo) :-
 	estima(Nodo, Estima),
@@ -71,7 +72,7 @@ aestrela(Caminhos, SolucaoCaminho) :-
 	seleciona(MelhorCaminho, Caminhos, OutrosCaminhos),
 	expande_aestrela(MelhorCaminho, ExpCaminhos),
 	append(OutrosCaminhos, ExpCaminhos, NovoCaminhos),
-        aestrela(NovoCaminhos, SolucaoCaminho).		
+        aestrela(NovoCaminhos, SolucaoCaminho).
 
 
 obtem_melhor([Caminho], Caminho) :- !.
@@ -79,8 +80,8 @@ obtem_melhor([Caminho], Caminho) :- !.
 obtem_melhor([Caminho1/Custo1/Est1,_/Custo2/Est2|Caminhos], MelhorCaminho) :-
 	Custo1 + Est1 =< Custo2 + Est2, !,
 	obtem_melhor([Caminho1/Custo1/Est1|Caminhos], MelhorCaminho).
-	
-obtem_melhor([_|Caminhos], MelhorCaminho) :- 
+
+obtem_melhor([_|Caminhos], MelhorCaminho) :-
 	obtem_melhor(Caminhos, MelhorCaminho).
 
 expande_aestrela(Caminho, ExpCaminhos) :-
@@ -92,7 +93,7 @@ adjacente([Nodo|Caminho]/Custo/_, [ProxNodo,Nodo|Caminho]/NovoCusto/Est) :-
 	estima(ProxNodo, Est).
 
 
-%---------------------------------pesquisa gulosa 
+%---------------------------------pesquisa gulosa
 
 resolve_gulosa(Nodo, Caminho/Custo) :-
 	estima(Nodo, Estima),
@@ -108,7 +109,7 @@ agulosa(Caminhos, SolucaoCaminho) :-
 	seleciona(MelhorCaminho, Caminhos, OutrosCaminhos),
 	expande_agulosa(MelhorCaminho, ExpCaminhos),
 	append(OutrosCaminhos, ExpCaminhos, NovoCaminhos),
-        agulosa(NovoCaminhos, SolucaoCaminho).		
+        agulosa(NovoCaminhos, SolucaoCaminho).
 
 
 obtem_melhor_g([Caminho], Caminho) :- !.
@@ -116,8 +117,8 @@ obtem_melhor_g([Caminho], Caminho) :- !.
 obtem_melhor_g([Caminho1/Custo1/Est1,_/Custo2/Est2|Caminhos], MelhorCaminho) :-
 	Est1 =< Est2, !,
 	obtem_melhor_g([Caminho1/Custo1/Est1|Caminhos], MelhorCaminho).
-	
-obtem_melhor_g([_|Caminhos], MelhorCaminho) :- 
+
+obtem_melhor_g([_|Caminhos], MelhorCaminho) :-
 	obtem_melhor(Caminhos, MelhorCaminho).
 
 expande_agulosa(Caminho, ExpCaminhos) :-
@@ -139,9 +140,9 @@ profundidadeprimeiro(Nodo, []) :-
 
 profundidadeprimeiro(Nodo, [ProxNodo|Caminho]) :-
 	adjacente(Nodo, ProxNodo),
-	profundidadeprimeiro(ProxNodo, Caminho).	
+	profundidadeprimeiro(ProxNodo, Caminho).
 
-adjacente(Nodo, ProxNodo) :- 
+adjacente(Nodo, ProxNodo) :-
 	move(Nodo, ProxNodo, _).
 
 
@@ -155,5 +156,4 @@ inverso([X|Xs],Ys, Zs):-
 	inverso(Xs, [X|Ys], Zs).
 
 seleciona(E, [E|Xs], Xs).
-seleciona(E, [X|Xs], [X|Ys]) :- seleciona(E, Xs, Ys).	
-
+seleciona(E, [X|Xs], [X|Ys]) :- seleciona(E, Xs, Ys).
