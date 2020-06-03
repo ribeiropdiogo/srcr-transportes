@@ -101,18 +101,18 @@ escreve_resultado([],D) :- write('Duracao estimada: '),
         write(D), write(' min'), nl.
 escreve_resultado([[P1,P2,C]|L],D) :- write('Paragem '),
         write(P1), write(' -> Paragem '), write(P2),
-        write(' | Carreira: '), write(C),nl, 
+        write(' | Carreira: '), write(C),nl,
         escreve_resultado(L,D).
-escreve_resultado([]).       
+escreve_resultado([]).
 escreve_resultado([[P1,P2,C]|L]) :- write('Paragem '),
         write(P1), write(' -> Paragem '), write(P2),
-        write(' | Carreira: '), write(C),nl, 
+        write(' | Carreira: '), write(C),nl,
         escreve_resultado(L).
 
 escreve_resultado_l([],D) :- write('Duracao estimada: '),
         write(D), write(' min'), nl.
-escreve_resultado_l([H|T],D) :- write('Percurso: '), nl, 
-                                escreve_resultado(H), 
+escreve_resultado_l([H|T],D) :- write('Percurso: '), nl,
+                                escreve_resultado(H),
                                 escreve_resultado_l(T,D).
 
 % ----------- Predicados Informação -----------
@@ -121,7 +121,7 @@ carreiras(P,CS) :- findall(C,percurso(P,P1,C,T), L),
         findall(C,percurso(P0,P,C,T), L),
         sort(L,CS).
 
-maiscarreiras(S) :- collectparagens(S,Paragens), 
+maiscarreiras(S) :- collectparagens(S,Paragens),
                     sort(Paragens,SParagens),
                     maiscarreirasaux(SParagens,ParCar),
                     escreve_carreiras(ParCar).
@@ -160,6 +160,7 @@ seleciona(E, [X|Xs], [X|Ys]) :- seleciona(E, Xs, Ys).
 
 inverso(Xs, Ys) :- inverso(Xs,[],Ys).
 inverso([],Xs,Xs).
-inverso([X|Xs],Ys,Zs) :- inverso(Xs, [X|Ys], Zs). 
+inverso([X|Xs],Ys,Zs) :- inverso(Xs, [X|Ys], Zs).
 
-
+max(A,B,C) :- C is max(A,B).
+min(A,B,C) :- C is min(A,B).

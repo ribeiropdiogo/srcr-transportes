@@ -55,13 +55,6 @@ for i in paragens.index:
 
 f.write("\n\n");
 
-# f.write("% -------------- Tempo Parado  --------------- \n")
-# for i in paragens.index:
-#     paragem = paragens['gid'][i]
-#     f.write("?- evolucao(tempo("+str(paragem)+",1)).\n")
-
-# f.write("\n\n");
-
 # Parsing das Adjacências
 filename = '../adjacencias.xlsx'
 fadjacencias = pd.ExcelFile(filename)
@@ -85,7 +78,7 @@ paragens = pd.read_excel(filename, sheet_name='Sheet 1')
 
 f.write("% --------------- Estimativas ---------------- \n")
 ruas = []
-destino = int(185)
+destino = int(466)
 
 
 for i in paragens.index:
