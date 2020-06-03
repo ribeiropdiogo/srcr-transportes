@@ -108,6 +108,9 @@ escreve_resultado([[P1,P2,C]|L]) :- write('Paragem '),
         write(P1), write(' -> Paragem '), write(P2),
         write(' | Carreira: '), write(C),nl,
         escreve_resultado(L).
+escreve_resultado([Paragem|L],D) :- write('Paragem: '),
+        write(Paragem),nl,
+        escreve_resultado(L,D).
 
 escreve_resultado_l([],D) :- write('Duracao estimada: '),
         write(D), write(' min'), nl.

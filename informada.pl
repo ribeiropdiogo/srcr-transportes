@@ -13,9 +13,11 @@
 
 pesquisarbfs(NodoInicial,NodoFinal) :-
         evolucao(destino(NodoFinal)),
-        rbfs([],[(NodoInicial, 0/0/0)],99999,_,yes,Solucao),
+        rbfs([],[(NodoInicial, 0/0/0)],99999,_,yes,S),
         involucao(destino(NodoFinal)),
-        write(Solucao).
+        reverse(S,Solucao),
+        duracao(Solucao,D),
+        escreve_resultado(Solucao,D).
 
 rbfs(Caminho,[(Nodo, G/F/FF)|Nodos],Limite,FF,no,_) :-
         FF > Limite, !.
