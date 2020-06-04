@@ -167,3 +167,6 @@ inverso([X|Xs],Ys,Zs) :- inverso(Xs, [X|Ys], Zs).
 
 max(A,B,C) :- C is max(A,B).
 min(A,B,C) :- C is min(A,B).
+
+conc([],L,L).
+conc([X|L1],L2,[X|L3]) :- conc(L1,L2,L3).

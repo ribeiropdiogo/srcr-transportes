@@ -54,6 +54,28 @@ bfsr(Y,[n(S,P1)|Ns],C,P) :- findall(n(S1,[[S,S1,A]|P1]),
         append(C,Es,C1),
         bfsr(Y,O,C1,P).
 
+
+        aaaa(NodoInicial,NodoFinal) :-
+                evolucao(destino(NodoFinal)),
+                breadthfirst([[NodoInicial]],S),
+                involucao(destino(NodoFinal)),
+                reverse(S,Solucao),
+                write(Solucao).
+
+
+        breadthfirst([[Nodo|Caminho]|_],[Nodo|Caminho]) :-
+                destino(Nodo).
+
+        breadthfirst([Caminho|Caminhos],Solucao) :-
+                extend(Caminho,NCaminhos),
+                append(Caminhos,NCaminhos,Caminhos1),
+                breadthfirst(Caminhos1,Solucao).
+
+        extend([Nodo|Caminho],NCaminhos) :-
+                findall([NNodo,Nodo|Caminho],
+                (percurso(Nodo,NNodo,Carreira,_), \+member(NNodo,[Nodo|Caminho])),
+                NCaminhos).
+
 % Efetua a pesquisa breadth-first incluindo/excluindo as operadoras dadas
 % Parâmetros: paragem inicial, paragem final, opção, lista de operadoras
 viagembf(ParagemI,ParagemF,Opt,Ops) :-

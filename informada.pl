@@ -71,28 +71,6 @@ insert(N,[N1|Ns],[N1|Ns1]) :-
 bestff([(N,F/G/FF)|Ns],FF).
 bestff([],99999).
 
-% ----------- Pesquisa Depth-First ------------
-
-pesquisapp(NodoInicial,NodoFinal) :-
-        evolucao(destino(NodoFinal)),
-        depthfirst(NodoInicial,S),
-        involucao(destino(NodoFinal)),
-        duracao(S,D),
-        escreve_resultado(S,D).
-
-depthfirst(NodoInicial,Caminho) :-
-        profundidadeprimeiro(NodoInicial, Caminho).
-
-profundidadeprimeiro(Nodo, []) :-
-        destino(Nodo).
-
-profundidadeprimeiro(Nodo, [[Nodo,ProxNodo,Carreira]|Caminho]) :-
-        percurso(Nodo, ProxNodo, Carreira, _),
-        profundidadeprimeiro(ProxNodo, Caminho).
-
-caminho(Nodo, ProxNodo) :-
-        percurso(Nodo, ProxNodo, _, _).
-
 % ------------ Pesquisa A-Estrela -------------
 
 pesquisaae(NodoInicial,NodoFinal) :-
